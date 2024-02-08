@@ -1,0 +1,256 @@
+﻿@{
+    ViewData["Title"] = "Blog List";
+}
+
+<style>
+    .btn-edit {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .blog-not-found {
+        min-height: 50vh
+    }
+
+    .blog-post {
+        -webkit-transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) 0s;
+        transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) 0s;
+    }
+
+    .blog-img img {
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .blog-post .blog-img .overlay,
+    .blog-post .blog-img .post-meta {
+        position: absolute;
+        opacity: 0;
+        -webkit-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+        cursor: pointer;
+    }
+
+    .blog-post .blog-img .overlay {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        cursor: pointer;
+    }
+
+    .blog-post .blog-img .post-meta {
+        bottom: 5%;
+        right: 5%;
+        z-index: 1;
+    }
+
+        .blog-post .blog-img .post-meta .read-more:hover {
+            color: #6dc77a !important;
+        }
+
+    .blog-post .content h1, .blog-post .content h2, .blog-post .content h3, .blog-post .content h4, .blog-post .content h5, .blog-post .content h6 {
+        line-height: 1.2;
+    }
+
+    .blog-post .content .title {
+        font-size: 18px;
+    }
+
+        .blog-post .content .title:hover {
+            color: #6dc77a !important;
+        }
+
+    .blog-post .content .author .name:hover {
+        color: #6dc77a !important;
+    }
+
+    .blog-post:hover {
+        -webkit-transform: translateY(-7px);
+        transform: translateY(-7px);
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    }
+
+        .blog-post:hover .blog-img .overlay {
+            opacity: 0.65;
+        }
+
+        .blog-post:hover .blog-img .post-meta {
+            opacity: 1;
+        }
+
+    .blog-post .post-meta .like i,
+    .profile-post .like i {
+        -webkit-text-stroke: 2px #dd2427;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .blog-post .post-meta .like:active i, .blog-post .post-meta .like:focus i,
+    .profile-post .like:active i,
+    .profile-post .like:focus i {
+        -webkit-text-stroke: 0px #dd2427;
+        -webkit-text-fill-color: #dd2427;
+    }
+
+    .avatar.avatar-ex-sm {
+        height: 36px;
+    }
+
+    img.avatar {
+        margin-right: 6px;
+    }
+
+    .shadow {
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15) !important;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .text-muted {
+        color: #8492a6 !important;
+    }
+
+
+    .para-desc {
+        max-width: 600px;
+    }
+
+    .text-muted {
+        color: #8492a6 !important;
+    }
+
+    .section-title .title {
+        letter-spacing: 0.5px;
+        font-size: 30px;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="d-flex align-items-center w-100 justify-content-between">
+        <h4 class="title">Blog List</h4>
+        <div class="d-flex justify-content-between gap-2">
+            <button id="blog-manage" type="button" class="btn btn-info btn-rounded d-none" data-mdb-ripple-init onclick="window.location.href='/blog/manage'">Manage</button>
+            <button id="blog-my-blog" type="button" class="btn btn-secondary btn-rounded d-none" data-mdb-ripple-init id="my-blog-btn">My Blog</button>
+            <button id="blog-create-blog" type="button" class="btn btn-primary btn-rounded d-none" data-mdb-ripple-init onclick="window.location.href='/blog/create'">Create</button>
+        </div>
+    </div><!--end row-->
+
+    <div class="row" id="blog-list">
+        @*<div class="col-lg-4 col-md-6 mt-4 pt-2">
+        <div class="blog-post rounded border">
+        <div class="blog-img d-block overflow-hidden position-relative">
+        <img src="https://www.bootdey.com/image/350x280/FF7F50/000000" class="img-fluid rounded-top" alt="">
+        <div class="overlay rounded-top bg-dark"></div>
+        <div class="post-meta">
+        <a href="javascript:void(0)" class="text-light d-block text-right like"><i class="mdi mdi-heart"></i> 33</a>
+        <a href="javascript:void(0)" class="text-light read-more">Read More <i class="mdi mdi-chevron-right"></i></a>
+        </div>
+        </div>
+        <div class="content p-3">
+        <small class="text-muted p float-right">19th Oct, 19</small>
+        <small><a href="javascript:void(0)" class="text-primary">Marketing</a></small>
+        <h4 class="mt-2"><a href="javascript:void(0)" class="text-dark title">Quick guide on business with friends.</a></h4>
+        <p class="text-muted mt-2">There is now an abundance of readable dummy texts. These are usually used when a text is required purely to fill a space.</p>
+        <div class="pt-3 mt-3 border-top d-flex">
+        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="img-fluid avatar avatar-ex-sm rounded-pill mr-3 shadow" alt="">
+        <div class="author mt-2">
+        <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark name">Lisa Marvel</a></h6>
+        </div>
+        </div>
+        </div>
+        </div><!--end blog post-->
+        </div>*@
+    </div>
+</div>
+
+<script>
+    const notFoundBlog = `<div class="row blog-not-found">
+                    <div class="col-md-8 mx-auto d-flex align-items-center justify-content-center">
+                        <div class="text-center">
+                            <h1 class="display-4">Oops!</h1>
+                            <p class="lead">We couldn't find the blog you're looking for.</p>
+                            <a href="#" class="btn btn-primary">Go Back to Home</a>
+                        </div>
+                    </div>
+                </div>`
+
+    $(document).ready(async function() {
+        const user = getUserData();
+        if (user) {
+            if (user.role === "Admin") {
+                $('#blog-manage').removeClass('d-none')
+            }
+            $('#blog-create-blog').removeClass('d-none')
+            $('#blog-my-blog').removeClass('d-none')
+        }
+
+
+        try {
+            const response = await fetch('http://localhost:5000/api/Blog/all', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            const responseData = await response.json();
+            if (responseData.isSuccess) {
+                renderBlogList(responseData.data);
+            } else {
+                console.error(responseData.message);
+            }
+        } catch (error) {
+            console.error('There was an error!', error);
+        }
+    });
+
+    function renderBlogList(blogData) {
+        const blogListContainer = $('#blog-list');
+
+        if (blogData.length === 0) {
+            blogListContainer.append(notFoundBlog);
+
+            return;
+        }
+
+        blogData.forEach(blog => {
+            const createdAt = new Date(blog.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const author = blog.user;
+            const authorAvatar = author.avatar ? author.avatar : 'https://bootdey.com/img/Content/avatar/avatar2.png';
+
+            const blogItem = `
+                                    <div class="col-lg-4 col-md-6 mt-4 pt-2">
+                                        <div class="blog-post rounded border">
+                                            <div class="blog-img d-block overflow-hidden position-relative">
+                                                <img src="${blog.imageUrl}" class="img-fluid rounded-top" alt="">
+                                                <div class="overlay rounded-top bg-dark"></div>
+                                                ${blog.user.id === getUserData()?.id ? `<button type="button" class="btn btn-warning btn-edit" onclick="window.location.href='/blog/edit?id=${blog.id}'"><i class="fas fa-pen"></i></button>` : ''}
+                                            </div>
+                                            <div class="content p-3">
+                                                <small class="text-muted p float-right">${createdAt}</small> 
+                                                <div class="d-flex justify-content-between gap-2 align-items-center">
+                                                    <h4 class="mt-2"><a href="/blog/detail?id=${blog.id}" class="text-dark title">${blog.title}</a></h4>
+                                                    <a href="javascript:void(0)" class=""><i class="fas fa-eye"></i> ${blog.seen}</a>
+                                                </div>
+                                                <div class="pt-3 mt-3 border-top d-flex">
+                                                    <img src="${authorAvatar}" class="img-fluid avatar avatar-ex-sm rounded-pill mr-3 shadow" alt="">
+                                                    <div class="author mt-2">
+                                                        <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark name">${author.fullName ? author.fullName : author.email}</a></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!--end blog post-->
+                                    </div>`;
+
+            blogListContainer.append(blogItem);
+        });
+    }
+
+
+</script>

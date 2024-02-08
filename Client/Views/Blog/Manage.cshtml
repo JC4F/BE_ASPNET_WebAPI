@@ -1,0 +1,188 @@
+﻿@{
+    ViewData["Title"] = "Manage";
+}
+
+<style>
+    .blog-not-found {
+        min-height: 50vh
+    }
+</style>
+
+<div class="container mt-4" id="blog-manager">
+    <h4 class="title mb-4">Manage Blog</h4>
+
+
+    <table class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+            <tr>
+                <th>Name</th>
+                <th>Title</th>
+                <th>Vote</th>
+                <th>Seen</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*<tr>
+            <td>
+            <div class="d-flex align-items-center">
+            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+            alt=""
+            style="width: 45px; height: 45px"
+            class="rounded-circle" />
+            <div class="ms-3">
+            <p class="fw-bold mb-1">John Doe</p>
+            <p class="text-muted mb-0">john.doe@gmail.com</p>
+            </div>
+            </div>
+            </td>
+            <td>
+            <p class="fw-normal mb-1">Software engineer</p>
+            <p class="text-muted mb-0">IT department</p>
+            </td>
+            <td>
+            <span class="badge badge-success rounded-pill d-inline">Active</span>
+            </td>
+            <td>Senior</td>
+            <td>
+            <button type="button" class="btn btn-success" data-mdb-ripple-init>Accept</button>
+            <button type="button" class="btn btn-danger" data-mdb-ripple-init>Delete</button>
+            </td>
+            </tr>*@
+        </tbody>
+    </table>
+
+    <div id="blog-manager-not-found"></div>
+</div>
+
+<script>
+    const notFoundBlog = `<div class="row blog-not-found">
+                                                <div class="col-md-8 mx-auto d-flex align-items-center justify-content-center">
+                                                    <div class="text-center">
+                                                        <h1 class="display-4">Oops!</h1>
+                                                        <p class="lead">We couldn't find the blog you're looking for.</p>
+                                                        <a href="#" class="btn btn-primary">Go Back to Home</a>
+                                                    </div>
+                                                </div>
+                                            </div>`
+
+    async function handleAccept(blogId) {
+        try {
+            const response = await fetch(`http://localhost:5000/api/Blog/update/${blogId}`, {
+                method: 'PUT',
+                headers: {
+                    'accept': 'text/plain',
+                    'Content-Type': 'application/json-patch+json',
+                    'Authorization': 'Bearer ' + getUserData().accessToken,
+                },
+                body: JSON.stringify({
+                    status: 'Enable'
+                })
+            });
+            const data = await response.text();
+            console.log(data);
+            fetchDataAndPopulateTable();
+        } catch (error) {
+            console.error('Error accepting blog:', error);
+            showToast("Something wrong");
+        }
+    }
+
+    async function handleDelete(blogId) {
+        try {
+            const response = await fetch(`http://localhost:5000/api/Blog/${blogId}`, {
+                method: 'DELETE',
+                headers: {
+                    'accept': 'text/plain',
+                    'Authorization': 'Bearer ' + getUserData().accessToken,
+                }
+            });
+            const data = await response.text();
+            console.log(data);
+            fetchDataAndPopulateTable();
+        } catch (error) {
+            console.error('Error deleting blog:', error);
+            showToast("Something wrong");
+        }
+    }
+
+
+    async function fetchDataAndPopulateTable() {
+        try {
+            const response = await fetch('http://localhost:5000/api/Blog/all-pending', {
+                headers: {
+                    'Authorization': 'Bearer ' + getUserData().accessToken,
+                }
+            });
+            const data = await response.json();
+
+            if (data.isSuccess && data.data) {
+                const tbody = document.querySelector('table tbody');
+
+                tbody.innerHTML = '';
+
+                if (data.data.length === 0) {
+                    $('#blog-manager-not-found').append(notFoundBlog)
+                    return;
+                }
+
+                data.data.forEach(blog => {
+                    const userAvatar = blog.user.avatar || 'https://mdbootstrap.com/img/new/avatars/8.jpg';
+                    const userName = blog.user.email.split('@@')[0];
+                    const userEmail = blog.user.email;
+                    const blogTitle = blog.title;
+                    const blogId = blog.id;
+                    const blogCreatedAt = blog.createdAt;
+                    const voteCount = blog.blogRatings.reduce((accumulator, currentValue) => accumulator + currentValue.vote,
+                        0);
+                    const seenCount = blog.seen;
+
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="${userAvatar}" alt="" style="width: 45px; height: 45px" class="rounded-circle" />
+                                                <div class="ms-3">
+                                                    <p class="fw-bold mb-1">${userName}</p>
+                                                    <p class="text-muted mb-0">${userEmail}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="/blog/detail?id=${blogId}" class="fw-normal mb-1">${blogTitle}</p>
+                                            <p class="text-muted mb-0">${blogCreatedAt}</p>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-success rounded-pill d-inline">${voteCount}</span>
+                                        </td>
+                                        <td><span class="badge badge-success rounded-pill d-inline">${seenCount}</span></td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-mdb-ripple-init>Accept</button>
+                                            <button type="button" class="btn btn-danger" data-mdb-ripple-init>Delete</button>
+                                        </td>
+                                                        `;
+
+                    const acceptButton = row.querySelector('.btn-success');
+                    acceptButton.addEventListener('click', () => handleAccept(blog.id));
+
+                    const deleteButton = row.querySelector('.btn-danger');
+                    deleteButton.addEventListener('click', () => handleDelete(blog.id));
+
+                    const tbody = document.querySelector('table tbody');
+                    tbody.appendChild(row);
+                });
+
+            } else {
+                console.error('Error fetching blog data:', data.message);
+                showToast(data.message);
+            }
+        } catch (error) {
+            console.error('Error fetching blog data:', error);
+            showToast("Something wrong");
+        }
+    }
+
+    fetchDataAndPopulateTable();
+
+</script>

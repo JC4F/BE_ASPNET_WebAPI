@@ -1,0 +1,458 @@
+﻿@{
+    ViewData["Title"] = "Detail";
+}
+
+<style>
+    .custome-container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .left-side {
+        margin-left: 8.33333%;
+    }
+
+    .news-username {
+        padding-right: 48px;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 93px;
+    }
+
+    .news-interactive {
+        display: flex;
+        justify-content: end;
+        gap: 24px;
+        font-size: 24px;
+    }
+
+    .updown-interact {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+        .updown-interact i {
+            font-size: 40px;
+            cursor: pointer;
+            color: #af9c9c;
+        }
+
+            .updown-interact i.choose {
+                color: #493d3d;
+            }
+
+            .updown-interact i:hover {
+                color: #807272;
+            }
+
+        .updown-interact span {
+            line-height: 18px;
+        }
+
+    .news-title {
+        color: #222;
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 64px;
+        margin: 26px 0;
+    }
+
+    .news-heading__wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 28px;
+    }
+
+    .news-heading__left {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .news-heading__left a {
+            text-decoration: none;
+        }
+
+        .news-heading__left img {
+            border-radius: 50%;
+            height: 48px;
+            width: 48px;
+            cursor: pointer;
+        }
+
+    .heading-detail p {
+        color: #292929;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .heading-detail span {
+        color: #757575;
+    }
+
+    .news-heading__right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .news-heading__right span {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+            .news-heading__right span:hover {
+                opacity: 0.8;
+                ;
+            }
+
+    .news-content {
+        min-height: 500px;
+    }
+
+        .news-content img {
+            max-width: 100%;
+        }
+
+    div#loading-page {
+        height: calc(100vh - 100px);
+        width: calc(100vw - 100px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    /* header */
+    .back-to-homepage {
+        border-bottom: 2px solid #e8ebed;
+        padding: 10px 0 0 50px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        position: fixed;
+        background-color: #fff;
+        z-index: 10;
+    }
+
+    a.home-page {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 150px;
+    }
+
+        a.home-page img {
+            border-radius: 8px;
+            flex-shrink: 0;
+            height: 38px;
+            object-fit: contain;
+            width: 38px;
+        }
+
+        a.home-page span {
+            color: #808990;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+    .col-lg-3 {
+        text-align: end;
+        padding-top: 40px;
+        position: fixed;
+        right: 30px;
+    }
+
+    .spinner-border {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+
+        .spinner-border.hide {
+            display: none;
+        }
+</style>
+
+<div id="loading-page">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<div class="custome-container position-relative row d-none">
+    <div class="left-side col-lg-2 d-none d-lg-block">
+        <div class="news-username">
+            <div class="news-interactive">
+                <div class="updown-interact">
+                    <i class="fa-solid fa-caret-up"></i>
+                    <span>+1</span>
+                    <i class="fa-solid fa-caret-down"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right-side col-lg-6">
+        <h1 class="news-title">Sơn Đặng - Từ chàng sinh viên tới CEO của F8</h1>
+        <div class="news-heading__wrapper">
+            <div class="news-heading__left">
+                <a href="#"><img src="https://files.fullstack.edu.vn/f8-prod/user_avatars/26348/62f2f0038ccdd.png" alt=""></a>
+                <div class="heading-detail">
+                    <a href="#"><p>Long Nguyen</p></a>
+                    <span>one month ago</span>
+                </div>
+            </div>
+            <div class="news-heading__right">
+                <span><i class="fa-regular fa-bookmark"></i></span>
+                <!-- <span><i class="fa-solid fa-bookmark"></span> -->
+                <span><i class="fa-solid fa-ellipsis"></i></span>
+            </div>
+        </div>
+        <div class="news-content">
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="auth-side">
+            <button type="button" class="btn btn-warning">Update</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteModal">Delete</button>
+        </div>
+        <div class="admin-side">
+            <button type="button" class="btn btn-warning">Need to update</button>
+        </div>
+    </div>
+    <!-- Modal delete-->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure to delete this?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">
+                        <div class="spinner-border hide" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span>Delete</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="showReactModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">All Reaction<span></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="spinner-grow" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    let _$ = (selector) => document.querySelector(selector);
+    let errorMess = '';
+    let modalShowReact = _$('#showReactModal')
+    modalShowReact.addEventListener('hidden.bs.modal', () => {
+        modalShowReact.querySelector('.modal-title span').innerHTML = ``
+        modalShowReact.querySelector('.modal-body').innerHTML = `<div class="spinner-grow" role="status">
+                                                                                                                        <span class="visually-hidden">Loading...</span>
+                                                                                                                    </div>`
+    })
+
+    let processDistanceDate = (update, start) => {
+        let result;
+        let d1 = Date.parse(update || start);
+        let d2 = new Date();
+        let diffTime = Math.abs(d1 - d2);
+        let diffMinutes = Math.floor(diffTime / (1000 * 60));
+        let diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+        let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        let diffMoths = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 30));
+        let diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365));
+        if (diffMinutes < 1) {
+            result = "Just now!";
+        } else if (diffMinutes >= 1 && diffHours < 1) {
+            result = `${diffMinutes} minutes ago`;
+        } else if (diffHours >= 1 && diffDays < 1) {
+            result = `${diffHours} hours ago`;
+        } else if (diffDays >= 1 && diffMoths < 1) {
+            result = `${diffDays} days ago`;
+        } else if (diffMoths >= 1 && diffYears < 1) {
+            result = `${diffMoths} moths ago`;
+        } else if (diffYears >= 1) result = `${diffYears} years ago`;
+        return `${result}${update == null ? "" : " (has been updated)"}`;
+    };
+
+
+    async function NewsDetail() {
+        let blogId, dataRPOnLoad;
+        let loadingPage = _$('#loading-page');
+        let pageContent = _$('.custome-container');
+        let updownInteracts = document.querySelectorAll(".updown-interact i");
+        let currentVote = 0
+
+
+        window.addEventListener('load', async () => {
+            let url_string = document.URL;
+            let url = new URL(url_string);
+            blogId = url.searchParams.get("id");
+            try {
+                const response = await fetch(`http://localhost:5000/api/Blog/${blogId}`);
+                dataRPOnLoad = await response.json();
+
+                //not found case?
+                if (dataRPOnLoad.isSuccess === false) {
+                    return;
+                }
+                if (dataRPOnLoad.data.user.email === getUserData()?.email) {
+                    _$('.admin-side').remove();
+                    _$('.auth-side .btn-warning').addEventListener('click', () => {
+                        window.location.href = `${`http://localhost:5183/blog/edit?id=${blogId}`}`
+                    })
+                    _$('#DeleteModal .btn-primary').addEventListener('click', async (e) => {
+                        _$('#DeleteModal .spinner-border').classList.remove('hide')
+                        _$('#DeleteModal .btn-primary').classList.add('disabled')
+                        try {
+                            const deleteResponse = await fetch(`http://localhost:5000/api/Blog/${blogId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': 'Bearer ' + getUserData()?.accessToken,
+                                }
+                            });
+                            const data = await deleteResponse.json();
+                            errorMess = data.message;
+                            showToast(errorMess);
+                            if (data.isSuccess) {
+                                setTimeout(() => {
+                                    window.location.href = '/blog';
+                                }, 1000);
+                            }
+                        } catch (error) {
+                            console.error('There was a problem with delete blog:', error);
+                            showToast("Some thing wrong");
+                        }
+                    });
+                } else {
+                    _$('.auth-side').remove();
+                    if (getUserData()?.role === 'Admin') {
+                        _$('.admin-side .btn-warning').addEventListener('click', async () => {
+                            try {
+                                const updateResponse = await fetch(`http://localhost:5000/api/Blog/${blogId}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': 'Bearer ' + getUserData()?.accessToken,
+                                    },
+                                    body: JSON.stringify({ status: "Pending" })
+                                });
+                                const data = await updateResponse.json();
+                                errorMess = data.message;
+                                showToast(errorMess)
+                                if (data.isSuccess) {
+                                    setTimeout(() => {
+                                        window.location.href = '/blog';
+                                    }, 1000);
+                                }
+                            } catch (error) {
+                                console.error('There was a problem with the fetch operation:', error);
+                                showToast("Some thing wrong")
+                            }
+                        });
+                    } else {
+                        _$('.admin-side').remove();
+                    }
+                }
+
+                if (getUserData()?.id) {
+                    let userVote = dataRPOnLoad.data.blogRatings.find(x => x.userID === getUserData().id)?.vote || 0
+                    if (userVote === 1) {
+                        updownInteracts[0].classList.add("choose");
+                    } else if (userVote === -1) {
+                        updownInteracts[1].classList.add("choose");
+                    }
+                }
+
+                currentVote = dataRPOnLoad.data.blogRatings.reduce((accumulator, currentValue) => accumulator + currentValue.vote,
+                    0)
+
+                _$('.news-title').innerHTML = dataRPOnLoad.data.title
+                _$('.news-heading__left img').src = dataRPOnLoad.data.user.avatar || 'https://files.fullstack.edu.vn/f8-prod/user_avatars/26348/62f2f0038ccdd.png'
+                _$('.heading-detail p').innerHTML = `${dataRPOnLoad.data.user.email}`
+                _$('.heading-detail span').innerHTML = processDistanceDate(dataRPOnLoad.data.updateAt, dataRPOnLoad.data.createdAt)
+                _$('.news-content').innerHTML = dataRPOnLoad.data.content
+                _$('.updown-interact span').innerHTML = currentVote
+
+
+                //display page
+                loadingPage.classList.add('d-none')
+                pageContent.classList.remove('d-none')
+
+                for (let i = 0; i < updownInteracts.length; i++) {
+                    updownInteracts[i].addEventListener('click', async () => {
+                        let reactType = (i == 0 ? 1 : -1);
+
+                        try {
+                            const response = await fetch('http://localhost:5000/api/BlogRating/rating', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'Bearer ' + getUserData()?.accessToken,
+                                },
+                                body: JSON.stringify({ vote: reactType, blogID: blogId })
+                            });
+
+                            const resVote = await response.json();
+
+                            if (!resVote.isSuccess) {
+                                errorMess = resVote.message;
+                                showToast(errorMess);
+                                return;
+                            }
+
+                            if (updownInteracts[i].classList.contains('choose')) {
+                                updownInteracts[i].classList.remove('choose');
+                            } else {
+                                updownInteracts[0].classList.remove('choose');
+                                updownInteracts[1].classList.remove('choose');
+                                updownInteracts[i].classList.add('choose');
+                            }
+
+                            _$('.updown-interact span').innerHTML = Number(_$('.updown-interact span').innerHTML) - currentVote + reactType;
+                        } catch (error) {
+                            console.error('There was a problem with the fetch operation:', error);
+                            showToast("Some thing wrong")
+                        }
+                    });
+                }
+
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                showToast("Some thing wrong")
+            }
+        });
+    }
+
+    NewsDetail();
+
+</script>
